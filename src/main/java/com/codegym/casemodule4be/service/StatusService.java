@@ -2,7 +2,6 @@ package com.codegym.casemodule4be.service;
 
 import com.codegym.casemodule4be.model.Status;
 
-
 import java.util.Optional;
 
 public interface StatusService<T> {
@@ -16,7 +15,7 @@ public interface StatusService<T> {
 
     T findLastStatus();
 
-    Iterable<Status> findAllByOwnerFriend( Long id);
+    Iterable<Status> findAllByOwnerFriend(Long id);
 
     Iterable<T> findAllByOwner(Long id);
 

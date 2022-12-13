@@ -1,14 +1,17 @@
 package com.codegym.casemodule4be.service.impl;
 
+
+
+
 import com.codegym.casemodule4be.model.Status;
 import com.codegym.casemodule4be.repository.StatusRepository;
 import com.codegym.casemodule4be.service.StatusService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-
 import java.util.Optional;
-
 
 @Service
 public class StatusServiceImpl implements StatusService<Status> {

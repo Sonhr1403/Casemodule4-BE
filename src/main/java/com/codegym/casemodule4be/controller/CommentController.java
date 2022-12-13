@@ -1,5 +1,6 @@
 package com.codegym.casemodule4be.controller;
 
+import com.codegym.casemodule4be.model.Comment;
 import com.codegym.casemodule4be.service.CommentService;
 import com.codegym.casemodule4be.service.LikeCommentService;
 import com.codegym.casemodule4be.service.StatusService;
