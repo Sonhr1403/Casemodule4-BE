@@ -1,7 +1,5 @@
 package com.codegym.casemodule4be.security;
 
-
-
 import com.codegym.casemodule4be.security.jwt.CustomAccessDeniedHandler;
 import com.codegym.casemodule4be.security.jwt.JwtAuthenticationFilter;
 import com.codegym.casemodule4be.security.jwt.RestAuthenticationEntryPoint;
@@ -61,8 +59,8 @@ public class SecurityConfig  extends WebSecurityConfigurerAdapter {
 //    public PasswordEncoder passwordEncoder() {
 //        return new BCryptPasswordEncoder(10);
 //    }
-
-
+//
+//
 //    @Autowired
 //    public void configureGlobalSecurity(AuthenticationManagerBuilder auth) throws Exception {
 //        auth.userDetailsService(userService).passwordEncoder(passwordEncoder());
@@ -73,7 +71,7 @@ public class SecurityConfig  extends WebSecurityConfigurerAdapter {
         http.csrf().ignoringAntMatchers("/**");
         http.httpBasic().authenticationEntryPoint(restServicesEntryPoint());
         http.authorizeRequests()
-                .antMatchers("/login", "/register", "/users/**", "/comments/**", "/images/**", "/like-comments/**", "/like-statuses/**", "/relationships/**", "/statuses/**").permitAll()
+                .antMatchers("/login", "/register", "/statuses/**", "/users/**", "/comments/**", "/images/**", "/like-comments/**", "/like-statuses/**", "/relationships/**", "/statuses/**").permitAll()
 //                .antMatchers("/users/**", "/comments/**", "/images/**", "/like-comments/**", "/like-statuses/**", "/relationships/**", "/statuses/**").access("hasRole('ROLE_USER')")
 //                .antMatchers("/admin/**").access("hasRole('ROLE_ADMIN')")
 //                .antMatchers(HttpMethod.GET
@@ -86,7 +84,7 @@ public class SecurityConfig  extends WebSecurityConfigurerAdapter {
 //                        "/hello").access("hasRole('ROLE_ADMIN')")
 //                .antMatchers(HttpMethod.PUT, "/users")
 //                .access("hasRole('ROLE_USER')")
-                .anyRequest().authenticated()
+//                .anyRequest().authenticated()
                 .and().csrf().disable()
                 .logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout"));
         http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
