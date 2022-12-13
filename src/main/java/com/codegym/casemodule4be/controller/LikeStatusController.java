@@ -33,7 +33,7 @@ public class LikeStatusController {
         return true;
     }
 
-    @PostMapping("/likes")
+    @PostMapping("")
     public ResponseEntity<LikeStatus> likeStatus(@RequestParam Long idStatus, @RequestParam Long idUser) {
         LikeStatus likeStatus = new LikeStatus();
         Status status = statusService.findById(idStatus).get();
