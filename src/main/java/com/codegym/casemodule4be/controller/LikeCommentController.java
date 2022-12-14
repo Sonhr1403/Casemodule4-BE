@@ -1,10 +1,8 @@
 package com.codegym.casemodule4be.controller;
 
 import com.codegym.casemodule4be.model.*;
-import com.codegym.casemodule4be.service.CommentService;
 import com.codegym.casemodule4be.service.impl.CommentServiceImpl;
 import com.codegym.casemodule4be.service.impl.LikeCommentServiceImpl;
-import com.codegym.casemodule4be.service.impl.LikeStatusServiceImpl;
 import com.codegym.casemodule4be.service.impl.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

@@ -6,10 +6,10 @@ import javax.persistence.*;
 import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.util.List;
 import java.util.Set;
 
 @Entity
+@Table(name = "userTable")
 public class User implements Serializable {
     private static final long serialVersionUID = 1L;
 
@@ -37,11 +37,13 @@ public class User implements Serializable {
     @NotBlank(message = "số điện thoại không được để trống")
     private String phone;
 
+
     @Past(message = "Ngày sinh phải trước thời gian hiện tại")
     @NotNull(message = "không được để trống")
     private LocalDate birthday;
 
     private String fullname;
+
 
     private String avatar;
 
@@ -52,21 +54,24 @@ public class User implements Serializable {
     private boolean enabled = true;
 
     @ManyToMany(fetch = FetchType.EAGER)
-    private List<Role> roles;
+    @JoinTable(name = "user_role",
+            joinColumns = {@JoinColumn(name = "user_id")},
+            inverseJoinColumns = {@JoinColumn(name = "role_id")})
+    private Set<Role> roles;
 
     public User(String username, String password) {
         this.username = username;
         this.password = password;
     }
 
-    public User(String username, String password, String confirmPassword, List<Role> roles) {
+    public User(String username, String password, String confirmPassword, Set<Role> roles) {
         this.username = username;
         this.password = password;
         this.confirmPassword = confirmPassword;
         this.roles = roles;
     }
 
-    public User(Long id, String username, String password, String confirmPassword, String email, String phone, LocalDate birthday, List<Role> roles) {
+    public User(Long id, String username, String password, String confirmPassword, String email, String phone, LocalDate birthday, Set<Role> roles) {
         this.id = id;
         this.username = username;
         this.password = password;
@@ -77,7 +82,7 @@ public class User implements Serializable {
         this.roles = roles;
     }
 
-    public User(Long id, String username, String password, String confirmPassword, String email, String phone, LocalDate birthday, String fullname, String avatar, String address, String hobby, boolean enabled, List<Role> roles) {
+    public User(Long id, String username, String password, String confirmPassword, String email, String phone, LocalDate birthday, String fullname, String avatar, String address, String hobby, boolean enabled, Set<Role> roles) {
         this.id = id;
         this.username = username;
         this.password = password;
@@ -132,11 +137,11 @@ public class User implements Serializable {
         this.confirmPassword = confirmPassword;
     }
 
-    public List<Role> getRoles() {
+    public Set<Role> getRoles() {
         return roles;
     }
 
-    public void setRoles(List<Role> roles) {
+    public void setRoles(Set<Role> roles) {
         this.roles = roles;
     }
 
