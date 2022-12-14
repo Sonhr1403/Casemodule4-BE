@@ -4,8 +4,8 @@ package com.codegym.casemodule4be.controller;
 import com.codegym.casemodule4be.model.Role;
 import com.codegym.casemodule4be.model.User;
 import com.codegym.casemodule4be.repository.UserRepo;
-import com.codegym.casemodule4be.service.JwtService;
 import com.codegym.casemodule4be.service.UserService;
+import com.codegym.casemodule4be.service.impl.JwtService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -38,7 +38,7 @@ public class UserController {
                     new UsernamePasswordAuthenticationToken(user.getEmail(), user.getPassword()));
             SecurityContextHolder.getContext().setAuthentication(authentication);
 
-            String token = jwtService.createToken(authentication);
+            String token = jwtService.generateTokenLogin(authentication);
             return new ResponseEntity<>(token, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.EXPECTATION_FAILED);
@@ -58,7 +58,7 @@ public class UserController {
     }
     @GetMapping("/checkemail")
     public ResponseEntity<User> checkUser(@RequestParam String userName) {
-        User appUser = userService.findByName(userName);
+        User appUser = userService.findByUsername(userName);
         if (appUser != null) {
             return new ResponseEntity<>(appUser, HttpStatus.BAD_REQUEST);
         } else {
