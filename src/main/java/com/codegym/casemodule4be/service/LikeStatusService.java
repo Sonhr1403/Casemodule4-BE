@@ -13,7 +13,7 @@ public interface LikeStatusService {
 
     Iterable<LikeStatus> findAll();
 
-    LikeStatus findByUserLikeIdAndAndStatusId(Long idUser,Long idStatus);
+    LikeStatus findByUserLikeIdAndAndStatusId(Long idUser, Long idStatus);
 
     Integer findNumberOfLikeByStatus(Long statusId);
 }

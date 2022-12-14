@@ -1,6 +1,7 @@
 package com.codegym.casemodule4be.service.impl;
 
 import com.codegym.casemodule4be.model.Comment;
+import com.codegym.casemodule4be.model.Image;
 import com.codegym.casemodule4be.repository.CommentRepository;
 import com.codegym.casemodule4be.service.CommentService;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,8 +1,10 @@
 package com.codegym.casemodule4be.service;
 
+import org.springframework.data.repository.query.Param;
+
 import java.util.Optional;
 
-public interface CommentService<T>{
+public interface CommentService <T>{
     Iterable<T> findAll();
 
     Optional<T> findById(Long id);
