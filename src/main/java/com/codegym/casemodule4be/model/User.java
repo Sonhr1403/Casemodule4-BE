@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Set;
 
 @Entity
+@Table(name = "user_table")
 public class User implements Serializable {
     private static final long serialVersionUID = 1L;
 
@@ -22,7 +23,7 @@ public class User implements Serializable {
 
     @Column(nullable = false)
     @NotBlank(message = "password không được để trống")
-    private String password;
+        private String password;
 
     @Column(nullable = false)
     @NotBlank(message = "confirm password không được để trống")

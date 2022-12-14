@@ -27,4 +27,20 @@ public class UserService implements UserDetailsService {
     public User findByName(String email){
         return userRepo.findByEmail(email);
     }
+    public boolean save(User user){
+       try {
+           Role role = new Role();
+           role.setId(Long.valueOf(1));
+           role.setName("ROLE_ADMIN");
+           List<Role> roles = new ArrayList<>();
+           roles.add(role);
+           user.setRoles(roles);
+           userRepo.save(user);
+           return true;
+       }catch (Exception e){
+           e.printStackTrace();
+       }
+        return false;
+    }
+
 }

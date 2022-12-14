@@ -29,7 +29,10 @@ public class UserController {
     UserService userService;
     @Autowired
     private UserRepo userRepo;
-
+    @GetMapping("/getAll")
+    public ResponseEntity<Iterable<User>> getAll() {
+       return new ResponseEntity<>(userRepo.findAll(), HttpStatus.OK);
+    }
     @PostMapping("/login")
     public ResponseEntity<String> login(@RequestBody User user) {
         try {
@@ -47,13 +50,7 @@ public class UserController {
 
     @PostMapping("/register")
     public ResponseEntity<User> register(@RequestBody User user) {
-        Role role = new Role();
-        role.setId(Long.valueOf(1));
-        role.setName("ROLE_ADMIN");
-        List<Role> roles = new ArrayList<>();
-        roles.add(role);
-        user.setRoles(roles);
-        userRepo.save(user);
+       userService.save(user);
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
     @GetMapping("/checkemail")
