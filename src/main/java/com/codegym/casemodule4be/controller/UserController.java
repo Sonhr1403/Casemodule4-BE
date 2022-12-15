@@ -52,8 +52,8 @@ public class UserController {
     @Autowired
     private RoleService roleService;
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+//    @Autowired
+//    private PasswordEncoder passwordEncoder;
 
 
     @GetMapping("/users")
@@ -96,8 +96,8 @@ public class UserController {
             roles1.add(role1);
             user.setRoles(roles1);
         }
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        user.setConfirmPassword(passwordEncoder.encode(user.getConfirmPassword()));
+        user.setPassword(user.getPassword());
+        user.setConfirmPassword(user.getConfirmPassword());
         userService.save(user);
         return new ResponseEntity<>(user, HttpStatus.CREATED);
     }
@@ -165,8 +165,8 @@ public class UserController {
             user.setHobby(userOptional.get().getHobby());
             user.setPhone(userOptional.get().getPhone());
             user.setRoles(userOptional.get().getRoles());
-            user.setPassword(passwordEncoder.encode(user.getPassword()));
-            user.setConfirmPassword(passwordEncoder.encode(user.getConfirmPassword()));
+            user.setPassword(user.getPassword());
+            user.setConfirmPassword(user.getConfirmPassword());
             userService.save(user);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
