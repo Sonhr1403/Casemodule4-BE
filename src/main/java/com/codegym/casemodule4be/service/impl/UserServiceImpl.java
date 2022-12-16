@@ -119,4 +119,11 @@ public class UserServiceImpl implements UserService {
         return isCorrentConfirmPassword;
     }
 
+//    public User findByName(String name) {
+//        return userRepository.findByUsername(name);
+//    }
+//    public User findbysdt(String phone) {
+//        return userRepository.findByPhoneNumber(phone);
+//    }
+
 }

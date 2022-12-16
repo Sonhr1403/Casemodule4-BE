@@ -52,9 +52,6 @@ public class UserController {
     @Autowired
     private RoleService roleService;
 
-//    @Autowired
-//    private PasswordEncoder passwordEncoder;
-
 
     @GetMapping("/users")
     public ResponseEntity<Iterable<User>> showAllUser() {
@@ -104,7 +101,7 @@ public class UserController {
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody User user) {
-        if (!userService.isRegister(user)){
+        if (!userService.isRegister(user)) {
             return new ResponseEntity<>("1", HttpStatus.NOT_FOUND);
         }
         Authentication authentication = authenticationManager.authenticate(
@@ -219,5 +216,25 @@ public class UserController {
         return new ResponseEntity<Object>(
                 apiError, new HttpHeaders(), apiError.getStatus());
     }
-
 }
+//    thêm
+//@GetMapping("/checkUsername")
+//public ResponseEntity<User> checkUser(@RequestParam String userName) {
+//    User user = userService.findByName(userName);
+//    if (user==null){
+//        return new ResponseEntity<>(user,HttpStatus.OK);
+//    }else {
+//        return new ResponseEntity<>(user, HttpStatus.BAD_REQUEST);
+//    }
+//}
+//
+//    @GetMapping("/checkPhonenumber")
+//    public ResponseEntity<User> checkPhoneNumber(@RequestParam String phone) {
+//        User user = userService.findbysdt(phone);
+//        if (user==null){
+//            return new ResponseEntity<>(user,HttpStatus.OK);
+//        }else {
+//            return new ResponseEntity<>(user, HttpStatus.BAD_REQUEST);
+//        }
+//    }
+//}
