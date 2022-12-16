@@ -8,6 +8,7 @@ import com.codegym.casemodule4be.model.User;
 import com.codegym.casemodule4be.service.RoleService;
 import com.codegym.casemodule4be.service.UserService;
 import com.codegym.casemodule4be.service.impl.JwtService;
+import com.codegym.casemodule4be.service.impl.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
@@ -47,7 +48,7 @@ public class UserController {
     private JwtService jwtService;
 
     @Autowired
-    private UserService userService;
+    private UserServiceImpl userService;
 
     @Autowired
     private RoleService roleService;
@@ -216,25 +217,35 @@ public class UserController {
         return new ResponseEntity<Object>(
                 apiError, new HttpHeaders(), apiError.getStatus());
     }
+
+    //    thêm
+    @GetMapping("/checkUsername")
+    public ResponseEntity<User> checkUser(@RequestParam String username) {
+        User user1 = userService.findByName(username);
+        if (user1 == null) {
+            return new ResponseEntity<>(HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @GetMapping("/checkPhonenumber")
+    public ResponseEntity<User> checkPhoneNumber(@RequestParam String phone) {
+        User user = userService.findbysdt(phone);
+        if (user==null){
+            return new ResponseEntity<>(user,HttpStatus.OK);
+        }else {
+            return new ResponseEntity<>(user, HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @GetMapping("/checkemail")
+    public ResponseEntity<User> checkEmail(@RequestParam String email) {
+        User user = userService.findbyEmail(email);
+        if (user==null){
+            return new ResponseEntity<>(user,HttpStatus.OK);
+        }else {
+            return new ResponseEntity<>(user, HttpStatus.BAD_REQUEST);
+        }
+    }
 }
-//    thêm
-//@GetMapping("/checkUsername")
-//public ResponseEntity<User> checkUser(@RequestParam String userName) {
-//    User user = userService.findByName(userName);
-//    if (user==null){
-//        return new ResponseEntity<>(user,HttpStatus.OK);
-//    }else {
-//        return new ResponseEntity<>(user, HttpStatus.BAD_REQUEST);
-//    }
-//}
-//
-//    @GetMapping("/checkPhonenumber")
-//    public ResponseEntity<User> checkPhoneNumber(@RequestParam String phone) {
-//        User user = userService.findbysdt(phone);
-//        if (user==null){
-//            return new ResponseEntity<>(user,HttpStatus.OK);
-//        }else {
-//            return new ResponseEntity<>(user, HttpStatus.BAD_REQUEST);
-//        }
-//    }
-//}
