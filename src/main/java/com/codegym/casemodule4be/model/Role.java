@@ -15,36 +15,31 @@ import javax.persistence.*;
 
 @Entity
 @Data
-@Table(name = "Roles")
-public class Role implements GrantedAuthority {
+@Table(name="roles")
+public class Role implements Serializable {
+    private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
 
-    @Override
-    public String getAuthority() {
+    public static long getSerialVersionUID() {
+        return serialVersionUID;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getName() {
         return name;
     }
-}
 
-//    public static long getSerialVersionUID() {
-//        return serialVersionUID;
-//    }
-//
-//    public Long getId() {
-//        return id;
-//    }
-//
-//    public void setId(Long id) {
-//        this.id = id;
-//    }
-//
-//    public String getName() {
-//        return name;
-//    }
-//
-//    public void setName(String name) {
-//        this.name = name;
-//    }
-//}
+    public void setName(String name) {
+        this.name = name;
+    }
+}
