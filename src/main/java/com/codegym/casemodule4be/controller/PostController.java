@@ -1,7 +1,7 @@
 package com.codegym.casemodule4be.controller;
 
 import com.codegym.casemodule4be.model.Image;
-import com.codegym.casemodule4be.model.Status;
+import com.codegym.casemodule4be.model.Post;
 import com.codegym.casemodule4be.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,9 +16,9 @@ import java.util.Optional;
 @RestController
 @CrossOrigin("*")
 @RequestMapping("/statuses")
-public class StatusController {
+public class PostController {
     @Autowired
-    StatusService statusService;
+    PostService postService;
 
     @Autowired
     UserService userService;
@@ -27,7 +27,7 @@ public class StatusController {
     ImageService imageService;
 
     @Autowired
-    LikeStatusService likeStatusService;
+    LikePostService likePostService;
 
     @Autowired
     CommentService commentService;
@@ -35,26 +35,26 @@ public class StatusController {
     @GetMapping
     public ResponseEntity<ArrayList<?>> findAll(@RequestParam("currentId") Long currentId) {
         ArrayList<Iterable> result = new ArrayList<>();
-        ArrayList<Status> statusOwner = (ArrayList<Status>) statusService.findAllByOwner(currentId);
-        ArrayList<Status> statusFriend = (ArrayList<Status>) statusService.findAllByOwnerFriend(currentId);
-        ArrayList<Status> statusStranger = (ArrayList<Status>) statusService.findAllByStranger(currentId);
-        ArrayList<Status> listStatus = new ArrayList<>();
-        listStatus.addAll(statusOwner);
-        listStatus.addAll(statusFriend);
-        listStatus.addAll(statusStranger);
-        result.add(listStatus);
+        ArrayList<Post> postOwner = (ArrayList<Post>) postService.findAllByOwner(currentId);
+        ArrayList<Post> postFriend = (ArrayList<Post>) postService.findAllByOwnerFriend(currentId);
+        ArrayList<Post> postStranger = (ArrayList<Post>) postService.findAllByStranger(currentId);
+        ArrayList<Post> listPosts = new ArrayList<>();
+        listPosts.addAll(postOwner);
+        listPosts.addAll(postFriend);
+        listPosts.addAll(postStranger);
+        result.add(listPosts);
         ArrayList<Iterable<Image>> listImage = new ArrayList<>();
         ArrayList<Integer> listNumberOfLike = new ArrayList<>();
         ArrayList<Integer> listNumberOfComment = new ArrayList<>();
-        for (Status status : listStatus) {
-            Iterable<Image> images = imageService.findAllByStatus(status.getId());
+        for (Post post : listPosts) {
+            Iterable<Image> images = imageService.findAllByPost(post.getId());
             listImage.add(images);
-            Integer numberOfLike = likeStatusService.findNumberOfLikeByStatus(status.getId());
+            Integer numberOfLike = likePostService.findNumberOfLikeByPost(post.getId());
             if (numberOfLike == null) {
                 numberOfLike = 0;
             }
             listNumberOfLike.add(numberOfLike);
-            Integer numberOfComment = commentService.findNumberOfComment(status.getId());
+            Integer numberOfComment = commentService.findNumberOfComment(post.getId());
             if (numberOfComment == null) {
                 numberOfComment = 0;
             }
@@ -67,27 +67,27 @@ public class StatusController {
     }
 
     @PostMapping
-    public ResponseEntity<Status> saveStatus(@Valid @RequestBody Status status) {
-        status.setCreateAt(LocalDateTime.now());
-        statusService.save(status);
-        return new ResponseEntity(statusService.findLastStatus(), HttpStatus.CREATED);
+    public ResponseEntity<Post> saveStatus(@Valid @RequestBody Post post) {
+        post.setCreateAt(LocalDateTime.now());
+        postService.save(post);
+        return new ResponseEntity(postService.findLastPost(), HttpStatus.CREATED);
     }
 
 
     @GetMapping("/{id}")
     public ResponseEntity<ArrayList<?>> findById(@PathVariable Long id) {
-        Optional<Status> status = statusService.findById(id);
+        Optional<Post> status = postService.findById(id);
         if (!status.isPresent()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         ArrayList<Iterable> result = new ArrayList<>();
-        ArrayList<Optional<Status>> statuses = new ArrayList<>();
+        ArrayList<Optional<Post>> statuses = new ArrayList<>();
         ArrayList<Integer> listNumberOfLike = new ArrayList<>();
         statuses.add(status);
         result.add(statuses);
-        Iterable<Image> images = imageService.findAllByStatus(status.get().getId());
+        Iterable<Image> images = imageService.findAllByPost(status.get().getId());
         result.add(images);
-        Integer numberOfLike = likeStatusService.findNumberOfLikeByStatus(status.get().getId());
+        Integer numberOfLike = likePostService.findNumberOfLikeByPost(status.get().getId());
         if (numberOfLike == null) {
             numberOfLike = 0;
         }
@@ -97,49 +97,49 @@ public class StatusController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Status> updateStatus(@PathVariable Long id, @RequestBody Status status) {
-        Optional<Status> oldStatusOptional = statusService.findById(id);
+    public ResponseEntity<Post> updateStatus(@PathVariable Long id, @RequestBody Post post) {
+        Optional<Post> oldStatusOptional = postService.findById(id);
         if (!oldStatusOptional.isPresent()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 //        giữ nguyên đối tượng ko thay đổi
-        status.setId(oldStatusOptional.get().getId());
-        status.setOwner(oldStatusOptional.get().getOwner());
-        status.setCreateAt(oldStatusOptional.get().getCreateAt());
-        statusService.save(status);
-        imageService.deleteAllByStatus(status.getId());
-        return new ResponseEntity<>(status, HttpStatus.OK);
+        post.setId(oldStatusOptional.get().getId());
+        post.setOwner(oldStatusOptional.get().getOwner());
+        post.setCreateAt(oldStatusOptional.get().getCreateAt());
+        postService.save(post);
+        imageService.deleteAllByPost(post.getId());
+        return new ResponseEntity<>(post, HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Status> deleteComment(@PathVariable Long id) {
-        Optional<Status> statusOptional = statusService.findById(id);
-        Status status = statusOptional.get();
+    public ResponseEntity<Post> deleteComment(@PathVariable Long id) {
+        Optional<Post> statusOptional = postService.findById(id);
+        Post post = statusOptional.get();
         if (!statusOptional.isPresent()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        status.setStatus(0);
-        statusService.save(status);
-        return new ResponseEntity<>(status, HttpStatus.NO_CONTENT);
+//        post.setPostStatus();
+        postService.save(post);
+        return new ResponseEntity<>(post, HttpStatus.NO_CONTENT);
     }
 
     @GetMapping("/find-all-by-user/{id}")
     public ResponseEntity<ArrayList<?>> findAllByUser(@PathVariable Long id) {
         ArrayList<Iterable> result = new ArrayList<>();
-        Iterable<Status> listStatus = statusService.findAllByOwner(id);
+        Iterable<Post> listStatus = postService.findAllByOwner(id);
         result.add(listStatus);
         ArrayList<Iterable<Image>> listImage = new ArrayList<>();
         ArrayList<Integer> listNumberOfLike = new ArrayList<>();
         ArrayList<Integer> listNumberOfComment = new ArrayList<>();
-        for (Status status : listStatus) {
-            Iterable<Image> images = imageService.findAllByStatus(status.getId());
+        for (Post post : listStatus) {
+            Iterable<Image> images = imageService.findAllByPost(post.getId());
             listImage.add(images);
-            Integer numberOfLike = likeStatusService.findNumberOfLikeByStatus(status.getId());
+            Integer numberOfLike = likePostService.findNumberOfLikeByPost(post.getId());
             if (numberOfLike == null) {
                 numberOfLike = 0;
             }
             listNumberOfLike.add(numberOfLike);
-            Integer numberOfComment = commentService.findNumberOfComment(status.getId());
+            Integer numberOfComment = commentService.findNumberOfComment(post.getId());
             if (numberOfComment == null) {
                 numberOfComment = 0;
             }

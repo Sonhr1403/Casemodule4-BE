@@ -1,6 +1,5 @@
 package com.codegym.casemodule4be.controller;
 
-
 import com.codegym.casemodule4be.model.ApiError;
 import com.codegym.casemodule4be.model.JwtResponse;
 import com.codegym.casemodule4be.model.Role;
@@ -8,6 +7,7 @@ import com.codegym.casemodule4be.model.User;
 import com.codegym.casemodule4be.service.RoleService;
 import com.codegym.casemodule4be.service.UserService;
 import com.codegym.casemodule4be.service.impl.JwtService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;

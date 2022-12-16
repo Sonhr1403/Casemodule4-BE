@@ -1,7 +1,5 @@
 package com.codegym.casemodule4be.model;
 
-import lombok.Data;
-
 import javax.persistence.*;
 import javax.validation.constraints.*;
 import java.io.Serializable;

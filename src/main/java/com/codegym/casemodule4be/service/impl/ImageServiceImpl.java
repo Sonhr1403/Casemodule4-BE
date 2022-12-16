@@ -37,13 +37,13 @@ public class ImageServiceImpl implements ImageService<Image> {
     }
 
     @Override
-    public Iterable<Image> findAllByStatus(Long id) {
+    public Iterable<Image> findAllByPost(Long id) {
         return imageRepository.findAllByStatus(id);
     }
 
     @Transactional
     @Override
-    public void deleteAllByStatus(Long statusId) {
+    public void deleteAllByPost(Long statusId) {
         imageRepository.deleteAllByStatusId(statusId);
     }
 

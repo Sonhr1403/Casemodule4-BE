@@ -3,7 +3,7 @@ package com.codegym.casemodule4be.controller;
 import com.codegym.casemodule4be.model.Comment;
 import com.codegym.casemodule4be.service.CommentService;
 import com.codegym.casemodule4be.service.LikeCommentService;
-import com.codegym.casemodule4be.service.StatusService;
+import com.codegym.casemodule4be.service.PostService;
 import com.codegym.casemodule4be.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -23,7 +23,7 @@ public class CommentController {
     @Autowired
     UserService userService;
     @Autowired
-    StatusService statusService;
+    PostService postService;
     @Autowired
     LikeCommentService likeCommentService;
 

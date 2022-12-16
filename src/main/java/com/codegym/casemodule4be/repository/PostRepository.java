@@ -1,21 +1,21 @@
 package com.codegym.casemodule4be.repository;
 
-import com.codegym.casemodule4be.model.Status;
+import com.codegym.casemodule4be.model.Post;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface StatusRepository extends JpaRepository<Status, Long> {
-    @Query(value = "select * from status order by id desc limit 1", nativeQuery = true)
-    Status findLastStatus();
+public interface PostRepository extends JpaRepository<Post, Long> {
+    @Query(value = "select * from post order by id desc limit 1", nativeQuery = true)
+    Post findLastPost();
 
-    @Query(value = "select * from status where owner_id = :id and status <> 0 order by create_at desc", nativeQuery = true)
-    Iterable<Status> findAllByOwner(@Param("id") Long id);
+    @Query(value = "select * from post where owner_id = :id and status <> 0 order by create_at desc", nativeQuery = true)
+    Iterable<Post> findAllByOwner(@Param("id") Long id);
 
     @Query(value = "select *\n" +
-            " from status\n" +
+            " from post\n" +
             " where owner_id in\n" +
             "       (select (Case\n" +
             "                    when user1_id = :id then user2_id\n" +
@@ -26,10 +26,10 @@ public interface StatusRepository extends JpaRepository<Status, Long> {
             "        where user_table.id = :id\n" +
             "          and relationship.status = 2) and (status=1 or status=3)\n" +
             " order by create_at desc", nativeQuery = true)
-    Iterable<Status> findAllByOwnerFriend(@Param("id") Long id);
+    Iterable<Post> findAllByOwnerFriend(@Param("id") Long id);
 
     @Query(value = "select *\n" +
-            " from status\n" +
+            " from post\n" +
             " where owner_id not in\n" +
             "       (select (Case\n" +
             "                    when user1_id = :id then user2_id\n" +
@@ -41,5 +41,5 @@ public interface StatusRepository extends JpaRepository<Status, Long> {
             "          and relationship.status = 2) and status = 1\n" +
             "   and owner_id <> :id\n" +
             " order by create_at desc", nativeQuery = true)
-    Iterable<Status> findAllByStranger(@Param("id") Long id);
+    Iterable<Post> findAllByStranger(@Param("id") Long id);
 }

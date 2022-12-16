@@ -9,7 +9,7 @@ public class Image {
     private Long id;
 
     @ManyToOne
-    private Status status;
+    private Post post;
 
     private String image;
 
@@ -20,8 +20,8 @@ public class Image {
         this.id = id;
     }
 
-    public void setStatus(Status status) {
-        this.status = status;
+    public void setStatus(Post post) {
+        this.post = post;
     }
 
     public void setImage(String image) {
@@ -32,8 +32,8 @@ public class Image {
         return id;
     }
 
-    public Status getStatus() {
-        return status;
+    public Post getStatus() {
+        return post;
     }
 
     public String getImage() {

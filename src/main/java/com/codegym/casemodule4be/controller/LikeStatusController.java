@@ -1,10 +1,10 @@
 package com.codegym.casemodule4be.controller;
 
-import com.codegym.casemodule4be.model.LikeStatus;
-import com.codegym.casemodule4be.model.Status;
+import com.codegym.casemodule4be.model.LikePost;
+import com.codegym.casemodule4be.model.Post;
 import com.codegym.casemodule4be.model.User;
-import com.codegym.casemodule4be.service.impl.LikeStatusServiceImpl;
-import com.codegym.casemodule4be.service.impl.StatusServiceImpl;
+import com.codegym.casemodule4be.service.impl.LikePostServiceImpl;
+import com.codegym.casemodule4be.service.impl.PostServiceImpl;
 import com.codegym.casemodule4be.service.impl.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,17 +16,17 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/like-statuses")
 public class LikeStatusController {
     @Autowired
-    LikeStatusServiceImpl likeStatusService;
+    LikePostServiceImpl likeStatusService;
 
     @Autowired
-    StatusServiceImpl statusService;
+    PostServiceImpl statusService;
 
     @Autowired
     UserServiceImpl userService;
 
-    private boolean checkLikeStatus(User user, Status status, Iterable<LikeStatus> likeStatuses) {
-        for (LikeStatus i : likeStatuses) {
-            if (i.getStatus() == status && i.getUserLike() == user && i.getId() == null) {
+    private boolean checkLikeStatus(User user, Post post, Iterable<LikePost> likeStatuses) {
+        for (LikePost i : likeStatuses) {
+            if (i.getStatus() == post && i.getUserLike() == user && i.getId() == null) {
                 return false;
             }
         }
@@ -34,28 +34,28 @@ public class LikeStatusController {
     }
 
     @PostMapping("")
-    public ResponseEntity<LikeStatus> likeStatus(@RequestParam Long idStatus, @RequestParam Long idUser) {
-        LikeStatus likeStatus = new LikeStatus();
-        Status status = statusService.findById(idStatus).get();
+    public ResponseEntity<LikePost> likeStatus(@RequestParam Long idStatus, @RequestParam Long idUser) {
+        LikePost likePost = new LikePost();
+        Post post = statusService.findById(idStatus).get();
         User userOptional = userService.findById(idUser).get();
-        LikeStatus likeStatuses = likeStatusService.findByUserLikeIdAndAndStatusId(userOptional.getId(), status.getId());
-        if (checkLikeStatus(userOptional, status, likeStatusService.findAll())) {
+        LikePost likeStatuses = likeStatusService.findByUserLikeIdAndPostId(userOptional.getId(), post.getId());
+        if (checkLikeStatus(userOptional, post, likeStatusService.findAll())) {
             if (likeStatuses == null) {
-                likeStatus.setUserLike(userOptional);
-                likeStatus.setStatus(status);
-                likeStatusService.save(likeStatus);
+                likePost.setUserLike(userOptional);
+                likePost.setStatus(post);
+                likeStatusService.save(likePost);
             } else {
                 likeStatusService.delete(likeStatuses.getId());
             }
         }
-        return new ResponseEntity<>(likeStatus, HttpStatus.OK);
+        return new ResponseEntity<>(likePost, HttpStatus.OK);
     }
 
     @GetMapping("/check")
     public ResponseEntity check(@RequestParam Long idStatus, @RequestParam Long idUser) {
-        Status status = statusService.findById(idStatus).get();
+        Post post = statusService.findById(idStatus).get();
         User userOptional = userService.findById(idUser).get();
-        LikeStatus likeStatuses = likeStatusService.findByUserLikeIdAndAndStatusId(userOptional.getId(), status.getId());
+        LikePost likeStatuses = likeStatusService.findByUserLikeIdAndPostId(userOptional.getId(), post.getId());
         if (likeStatuses == null) {
             return new ResponseEntity(false, HttpStatus.OK);
         } else

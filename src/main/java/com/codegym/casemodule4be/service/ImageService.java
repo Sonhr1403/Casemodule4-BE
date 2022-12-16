@@ -13,9 +13,9 @@ public interface ImageService<T> {
 
     void remove(Long id);
 
-    Iterable<Image> findAllByStatus(Long id);
+    Iterable<Image> findAllByPost(Long id);
 
-    void deleteAllByStatus(Long statusId);
+    void deleteAllByPost(Long postId);
 
     Iterable<Image> findAllImageByUserId(Long idUser);
 

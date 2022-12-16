@@ -4,7 +4,7 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
-public class Status {
+public class Post {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -16,9 +16,10 @@ public class Status {
 
     private LocalDateTime createAt;
 
-    private int status;
+    @ManyToOne
+    private PostStatus postStatus;
 
-    public Status() {
+    public Post() {
     }
 
     public Long getId() {
@@ -53,12 +54,12 @@ public class Status {
         this.createAt = createAt;
     }
 
-    public int getStatus() {
-        return status;
+    public PostStatus getPostStatus() {
+        return postStatus;
     }
 
-    public void setStatus(int status) {
-        this.status = status;
+    public void setPostStatus(PostStatus postStatus) {
+        this.postStatus = postStatus;
     }
 }
 

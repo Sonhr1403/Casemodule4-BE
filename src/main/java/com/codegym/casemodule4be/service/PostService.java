@@ -1,11 +1,11 @@
 package com.codegym.casemodule4be.service;
 
-import com.codegym.casemodule4be.model.Status;
+import com.codegym.casemodule4be.model.Post;
 
 
 import java.util.Optional;
 
-public interface StatusService<T> {
+public interface PostService<T> {
     Iterable<T> findAll();
 
     Optional<T> findById(Long id);
@@ -14,9 +14,9 @@ public interface StatusService<T> {
 
     void remove(Long id);
 
-    T findLastStatus();
+    T findLastPost();
 
-    Iterable<Status> findAllByOwnerFriend( Long id);
+    Iterable<Post> findAllByOwnerFriend(Long id);
 
     Iterable<T> findAllByOwner(Long id);
 

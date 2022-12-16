@@ -10,7 +10,7 @@ public class Comment {
     private Long id;
 
     @ManyToOne
-    private Status status;
+    private Post post;
 
     @ManyToOne
     private Comment comment;
@@ -35,12 +35,12 @@ public class Comment {
         this.id = id;
     }
 
-    public Status getStatus() {
-        return status;
+    public Post getStatus() {
+        return post;
     }
 
-    public void setStatus(Status status) {
-        this.status = status;
+    public void setStatus(Post post) {
+        this.post = post;
     }
 
     public Comment getComment() {
