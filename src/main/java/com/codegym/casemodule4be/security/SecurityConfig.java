@@ -55,11 +55,6 @@ public class SecurityConfig  extends WebSecurityConfigurerAdapter {
         return new CustomAccessDeniedHandler();
     }
 
-//    @Bean
-//    public PasswordEncoder passwordEncoder() {
-//        return new BCryptPasswordEncoder(10);
-//    }
-
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {

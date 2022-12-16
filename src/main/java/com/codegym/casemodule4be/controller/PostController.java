@@ -4,6 +4,7 @@ import com.codegym.casemodule4be.model.Image;
 import com.codegym.casemodule4be.model.Post;
 import com.codegym.casemodule4be.model.User;
 import com.codegym.casemodule4be.service.*;
+import com.codegym.casemodule4be.service.impl.PostServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,7 +22,7 @@ import java.util.Optional;
 @RequestMapping("/postes")
 public class PostController {
     @Autowired
-    PostService postService;
+    PostServiceImpl postService;
 
     @Autowired
     UserService userService;
