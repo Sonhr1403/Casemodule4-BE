@@ -10,7 +10,10 @@ import org.springframework.stereotype.Repository;
 public interface UserRepository extends JpaRepository<User, Long> {
     User findByUsername(String username);
 
-//    @Query(nativeQuery = true,value = "SELECT * from user_table where phone = :phone")
-//    User findByPhoneNumber(String phone);
+    @Query(nativeQuery = true,value = "SELECT * from user_table where phone = :phone")
+    User findByPhoneNumber(String phone);
+
+    @Query(nativeQuery = true,value = "SELECT * from user_table where email = :email")
+    User findbyEmail(String email);
 
 }
