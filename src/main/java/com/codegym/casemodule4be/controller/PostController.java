@@ -2,10 +2,13 @@ package com.codegym.casemodule4be.controller;
 
 import com.codegym.casemodule4be.model.Image;
 import com.codegym.casemodule4be.model.Post;
+import com.codegym.casemodule4be.model.User;
 import com.codegym.casemodule4be.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -15,7 +18,7 @@ import java.util.Optional;
 
 @RestController
 @CrossOrigin("*")
-@RequestMapping("/statuses")
+@RequestMapping("/postes")
 public class PostController {
     @Autowired
     PostService postService;
@@ -68,7 +71,10 @@ public class PostController {
 
     @PostMapping
     public ResponseEntity<Post> saveStatus(@Valid @RequestBody Post post) {
+        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User user = userService.findByUsername(userDetails.getUsername());
         post.setCreateAt(LocalDateTime.now());
+        post.setOwner(user);
         postService.save(post);
         return new ResponseEntity(postService.findLastPost(), HttpStatus.CREATED);
     }
@@ -76,18 +82,18 @@ public class PostController {
 
     @GetMapping("/{id}")
     public ResponseEntity<ArrayList<?>> findById(@PathVariable Long id) {
-        Optional<Post> status = postService.findById(id);
-        if (!status.isPresent()) {
+        Optional<Post> post = postService.findById(id);
+        if (!post.isPresent()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         ArrayList<Iterable> result = new ArrayList<>();
         ArrayList<Optional<Post>> statuses = new ArrayList<>();
         ArrayList<Integer> listNumberOfLike = new ArrayList<>();
-        statuses.add(status);
+        statuses.add(post);
         result.add(statuses);
-        Iterable<Image> images = imageService.findAllByPost(status.get().getId());
+        Iterable<Image> images = imageService.findAllByPost(post.get().getId());
         result.add(images);
-        Integer numberOfLike = likePostService.findNumberOfLikeByPost(status.get().getId());
+        Integer numberOfLike = likePostService.findNumberOfLikeByPost(post.get().getId());
         if (numberOfLike == null) {
             numberOfLike = 0;
         }
@@ -98,14 +104,14 @@ public class PostController {
 
     @PutMapping("/{id}")
     public ResponseEntity<Post> updateStatus(@PathVariable Long id, @RequestBody Post post) {
-        Optional<Post> oldStatusOptional = postService.findById(id);
-        if (!oldStatusOptional.isPresent()) {
+        Optional<Post> oldPostOptional = postService.findById(id);
+        if (!oldPostOptional.isPresent()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 //        giữ nguyên đối tượng ko thay đổi
-        post.setId(oldStatusOptional.get().getId());
-        post.setOwner(oldStatusOptional.get().getOwner());
-        post.setCreateAt(oldStatusOptional.get().getCreateAt());
+        post.setId(oldPostOptional.get().getId());
+        post.setOwner(oldPostOptional.get().getOwner());
+        post.setCreateAt(oldPostOptional.get().getCreateAt());
         postService.save(post);
         imageService.deleteAllByPost(post.getId());
         return new ResponseEntity<>(post, HttpStatus.OK);
@@ -113,12 +119,11 @@ public class PostController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Post> deleteComment(@PathVariable Long id) {
-        Optional<Post> statusOptional = postService.findById(id);
-        Post post = statusOptional.get();
-        if (!statusOptional.isPresent()) {
+        Optional<Post> postOptional = postService.findById(id);
+        Post post = postOptional.get();
+        if (!postOptional.isPresent()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-//        post.setPostStatus();
         postService.save(post);
         return new ResponseEntity<>(post, HttpStatus.NO_CONTENT);
     }
